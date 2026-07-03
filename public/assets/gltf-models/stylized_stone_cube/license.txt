@@ -1,0 +1,11 @@
+Model Information:
+* title:	Stylized Stone Cube
+* source:	https://sketchfab.com/3d-models/stylized-stone-cube-d440d74f87ac456c934eca2d1349dfac
+* author:	Edi Santoso (https://sketchfab.com/edisan27)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Stylized Stone Cube" (https://sketchfab.com/3d-models/stylized-stone-cube-d440d74f87ac456c934eca2d1349dfac) by Edi Santoso (https://sketchfab.com/edisan27) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

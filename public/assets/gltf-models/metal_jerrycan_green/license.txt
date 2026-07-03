@@ -1,0 +1,8 @@
+Model Information:
+* title:	Metal Jerrycan Green
+* source:	https://sketchfab.com/3d-models/metal-jerrycan-green-397993c58d2d498a9335a4496aeef505
+* author:	Console Art Cybernetic (https://sketchfab.com/cacybernetic)
+
+Model License:
+* license type:	SKETCHFAB Standard (https://sketchfab.com/licenses)
+* requirements:	Under basic restrictions, use worldwide, on all types of media, commercially or not, and in all types of derivative works
