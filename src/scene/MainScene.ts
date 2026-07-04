@@ -32,14 +32,15 @@ export class MainScene extends BaseScene {
     private controls: OrbitControls;
 
     // Controllers
-    private activeModelController = new ActiveGLTFModelController(this.scene);
+    activeModelController = new ActiveGLTFModelController(this.scene);
 
     constructor(renderer: WebGLRenderer) {
         super();
 
         this.controls = new OrbitControls(this.camera, renderer.domElement);
         
-        this.camera.position.setZ(50);
+        this.camera.position.set(10, 10, 10);
+        this.camera.lookAt(0, 0, 0);
         
         this.keyLight.position.set(10, 20, 10);
         this.fillLight.position.set(-10, 5, 5);
@@ -55,11 +56,9 @@ export class MainScene extends BaseScene {
             this.fillLightHelper,
             this.rimLightHelper,
         );
-
-        this.activeModelController.load("assets/gltf-models/stylized_stone_cube/scene.gltf");
     }
 
-    update(delta: number): void {
+    update(_delta: number): void {
         this.controls.update();
     }
 

@@ -12,22 +12,31 @@ export class ActiveGLTFModelController {
         this.scene = scene;
     }
     
-    load(url: string) {
+    load(url: string): Promise<void> {
         const sceneName = url.substring(url.lastIndexOf("/") + 1);
         const parentPath = url.substring(0, url.lastIndexOf("/"));
-        
+    
         if (this.current) {
             this.scene.remove(this.current);
         }
-
         this.loader.setPath(parentPath + "/");
-        this.loader.load(sceneName, (data) => {
-            this.currentGLTF = data;
-            this.current = data.scene;
-            this.scene.add(this.current);
-            this.center(this.current);
+    
+        return new Promise((resolve, reject) => {
+            this.loader.load(
+                sceneName,
+                (data) => {
+                    this.currentGLTF = data;
+                    this.current = data.scene;
+                    this.scene.add(this.current);
+                    this.center(this.current);
+                    resolve();
+                },
+                undefined,
+                (err) => reject(err)
+            );
         });
     }
+
 
     center(model: Object3D) {
         model.position.set(0, 0, 0);
