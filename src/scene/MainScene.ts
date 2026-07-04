@@ -29,7 +29,7 @@ export class MainScene extends BaseScene {
     gridHelper = new GridHelper(200, 50);
 
     // Contols
-    private controls: OrbitControls;
+    controls: OrbitControls;
 
     // Controllers
     activeModelController = new ActiveGLTFModelController(this.scene);
@@ -60,6 +60,10 @@ export class MainScene extends BaseScene {
 
     update(_delta: number): void {
         this.controls.update();
+    }
+
+    setOrbitControlsEnabled(enabled: boolean) {
+        this.controls.enabled = enabled;
     }
 
 }
