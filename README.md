@@ -1,75 +1,96 @@
-# React + TypeScript + Vite
+# Geometry Slicer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Geometry Slicer is a web-based application built with **Three.js** that allows users to load a **GLTF** model and slice it using a cutting plane. The project is developed with **React**, **TypeScript**, and **Vite**.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Demo Videos
 
-## React Compiler
+### Demo 1 – metal_jerrycan_green
+[▶ Watch Demo](./demo/Recording_2026-07-04_234555.mp4)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Demo 2 – stylized_stone_cube
+[▶ Watch Demo](./demo/Recording_2026-07-04_233443.mp4)
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Framework / Approach Used
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+The project uses **Three.js** as the 3D rendering framework.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+The application is structured into separate modules to keep rendering, scene management, and slicing logic independent:
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- `core/` – Engine and scene management  
+- `scene/` – Scene setup and rendering  
+- `controllers/` – Active model management  
+- `cutting/` – Geometry slicing implementation  
+- `pages/` – React pages for the UI  
 
-```
+---
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Shading Model
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+The project uses **Three.js** materials for rendering the loaded GLTF models. Since Three.js provides built-in physically based rendering (PBR) materials for GLTF assets, the rendering follows a **PBR workflow**.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+---
 
-```
+## Geometry Slicing Approach
+
+The slicing logic is implemented in the `cutting/` module using `MeshCutter` and `CutManager`.
+
+The process works as follows:
+
+1. **Cutting Plane**
+   - A `THREE.Plane` defines the slicing surface in the mesh’s local space.
+
+2. **Vertex Classification**
+   - Each triangle’s vertices are tested against the plane using signed distance.
+   - Vertices are marked as either positive or negative side.
+
+3. **Triangle Clipping**
+   - Triangles fully on one side are kept as-is.
+   - Intersecting triangles are split by finding edge intersection points.
+   - Vertex attributes (position, normal, UV) are interpolated.
+
+4. **Rebuilding Geometry**
+   - Clipped polygons are triangulated using a fan method.
+   - Two new geometries are created:
+     - Positive side mesh
+     - Negative side mesh
+
+This approach only performs mesh splitting and preserves original attributes where possible.
+
+> **Note:** Cap geometry is not generated, so the cut surface remains open.
+
+---
+
+## Trade-offs
+
+- **Model loading:** Users can load any local `.gltf` model instead of choosing from a predefined list. This removes the need for a separate Model / Shape Switcher.
+
+- **Post-slice interaction:** Click-and-drag movement of sliced pieces is not implemented. Instead, the two halves are automatically separated by ~15% after slicing for better visual clarity.
+
+- **UI focus:** The UI is functional but not fully polished due to time constraints, as the main focus was on implementing the core geometry slicing features.
+
+---
+
+## Known Issues
+
+- No cap generation (open cut surfaces)
+- May not handle complex or non-manifold meshes well
+- Large GLTF models may need performance optimization
+
+---
+
+## Project Structure
+
+```text
+src/
+├── assets/
+├── controllers/
+├── core/
+├── cutting/
+├── pages/
+├── scene/
+├── App.tsx
+└── main.tsx
